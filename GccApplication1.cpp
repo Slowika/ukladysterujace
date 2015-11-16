@@ -3,7 +3,11 @@
  *
  * Created: 2015-11-04 18:09:57
  *  Author: Administrator
- */ 
+ */
+
+//SPRAWOZDANIE 4.11. grupa 18:00
+//Autorzy: Agnieszka Słowik, Daniel Misior
+
 #include <stdbool.h>
 #define __DELAY_BACKWARD_COMPATIBLE__
 #include <avr/io.h>
@@ -19,22 +23,23 @@ uint16_t snake_counter = 0;
 bool snake_flag = true;
 void snake()
 {
-	if(snake_counter==0)
+	if(snake_counter==0) //snake idzie od pierwszej diody do ostatniej
 	{
 		snake_counter=1;
 		snake_flag=true;
 	}
-	else if( snake_counter==256 )
+	else if( snake_counter==256 ) //ostatnia dioda, snake zawraca
 	{
 		snake_flag = false;
 		snake_counter/=2;
 	}
-	PORTA = snake_counter;
+	PORTA = snake_counter; //dioda
 	snake_counter = snake_flag?snake_counter*2:snake_counter/2;
 	
 	_delay_ms(1000);
 }
 /////////////////////////////////////// gasnie i zapala sie na przycisk
+
 bool shine_flag = true;
 uint8_t shine_counter = 0;
 void shine()
@@ -42,7 +47,8 @@ void shine()
 	PORTA = 0xFF;
 	_delay_ms(shine_counter);
 	PORTA = 0;
-	_delay_ms(100-shine_counter);
+	_delay_ms(100-shine_counter); //100ms - czas jednego cyklu
+    
 	if( shine_flag ) ++shine_counter;
 	else if(shine_counter)--shine_counter;
 	if( shine_counter>100 )
@@ -53,7 +59,7 @@ void shine()
 	uint8_t count = 100;
 	while( count-->0)
 	{
-		if( !(PINC & 0x80) ) 
+		if( !(PINC & 0x80) ) //przycisk
 		{
 			if( shine_flag && shine_counter==100 )
 			{
